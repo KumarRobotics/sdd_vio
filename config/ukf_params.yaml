@@ -1,0 +1,19 @@
+noise_std:
+  process:
+    acc:
+      x: 0.5
+      y: 0.5
+      z: 0.5
+    w:
+      x: 0.1
+      y: 0.1
+      z: 0.1
+    acc_bias:
+      x: 0.01
+      y: 0.01
+      z: 0.01
+
+acc_bias:
+  x: 0
+  y: 0
+  z: 0

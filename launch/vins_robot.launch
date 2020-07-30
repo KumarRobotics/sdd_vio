@@ -1,0 +1,150 @@
+<launch>
+
+  <arg name="mass" default="0.250"/>
+  <arg name="odotopic" value="/stereo/quadrotor_ukf/control_odom"/>
+
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find vins)/config/custom_rosconsole.conf"/>
+
+  <arg name="namespace_name" default="stereo"/>
+  <arg name="nodelet_manager_name" default="stereo_nodelet_manager"/>
+  <arg name="camera_number" default="3"/> <!-- use 3 for 8x74, 2 for 8x96 -->
+
+  <group ns="$(arg namespace_name)">
+
+    <param name="mass" value="$(arg mass)"/>
+
+    <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager_name)" args="manager" output="screen">
+      <param name="num_worker_threads" value="4"/>
+    </node>
+
+    <!-- camera driver nodelet -->
+    <node pkg="nodelet" type="nodelet" name="snap_cam_nodelet"
+      args="load snap_cam_ros/stereo_driver $(arg nodelet_manager_name)">
+      <param name="format" value="1"/>
+      <param name="camera_number" value="$(arg camera_number)"/>
+      <param name="width" value="640"/>
+      <param name="height" value="480"/>
+      <param name="frames_per_second" value="15"/>
+      <param name="frame_id" value="/left"/>
+      <param name="frame_id_right" value="/right"/>
+    </node>
+
+
+    <!-- Stereo rectify -->
+    <node pkg="nodelet"
+      type="nodelet"
+      args="load snap_cam_ros/StereoRectifyNodelet $(arg nodelet_manager_name)"
+      name="grabber_rectify_nodelet"
+      required="true"
+      output="screen">
+      <remap from="~image_left" to="left/image_raw"/>
+      <remap from="~image_right" to="right/image_raw"/>
+      <remap from="~image_left_rect" to="image_left_rect"/>
+      <remap from="~image_right_rect" to="image_right_rect"/>
+      <remap from="~imagestereo_rect_info" to="imagestereo_rect_info"/>
+    </node>
+
+    <!-- IMU driver -->
+    <node pkg="nodelet"
+      type="nodelet"
+      name="imu_pub"
+      args="load vio_qc/ImuPublisherNodelet $(arg nodelet_manager_name)"
+      output="screen">
+      <remap from="~imu" to="imu"/>
+    </node>
+
+    <!-- Stereo VINS -->
+    <node pkg="nodelet" type="nodelet" name="vins_node"
+      args="load vins/VinsNodelet $(arg nodelet_manager_name)" output="screen">
+      <remap from="~cam_topic_left" to="image_left_rect"/>
+      <remap from="~cam_topic_right" to="image_right_rect"/>
+      <rosparam command="load" file="$(find vins)/config/vo_param.yaml"/>  
+    </node>
+
+    <!-- UKF -->
+    <node pkg="quadrotor_ukf"
+      type="quadrotor_ukf"
+      name="quadrotor_ukf"
+      output="screen">
+      <rosparam file="$(find vins)/config/ukf_params.yaml"/>
+      <remap from="~odom_slam" to="/stereo/vins_node/cam"/>
+      <remap from="~imu" to="imu"/>
+    </node>
+
+    <!--
+    <node pkg="nodelet"
+      type="nodelet"
+      name="fla_ukf"
+      args="standalone fla_ukf/FLAUKFNodelet"
+      clear_params="true"
+      output="screen">
+      <rosparam file="$(find fla_ukf)/config/params.yaml"/>
+      <remap from="~imu" to="imu"/>
+      <remap from="~cam_odom" to="vins_node/cam"/>
+      <remap from="~odom_out" to="$(arg odotopic)"/>
+    </node>
+    -->
+
+
+    <!-- Control stuff -->
+
+    <node pkg="nodelet"
+      type="nodelet"
+      name="standalone_nodelet"
+      args="manager"
+      output="screen">
+      <rosparam file="$(find mav_manager)/config/mav_manager_params.yaml" />
+    </node>
+
+    <node pkg="nodelet"
+      type="nodelet"
+      name="trackers_manager"
+      args="load trackers_manager/TrackersManager standalone_nodelet"
+      output="screen">
+      <rosparam file="$(find trackers_manager)/config/trackers.yaml"/>
+      <rosparam file="$(find state_control_vehicle)/config/QuadrotorQ2_gains.yaml"/>
+      <remap from="~odom" to="$(arg odotopic)"/>
+      <remap from="~cmd" to="position_cmd"/>
+    </node>
+
+    <node pkg="nodelet"
+      type="nodelet"
+      args="load so3_control/SO3ControlNodelet standalone_nodelet"
+      name="so3_control"
+      required="true"
+      output="screen">
+      <rosparam file="$(find state_control_vehicle)/config/QuadrotorQ2_gains.yaml"/>
+      <param name="mass" value="$(arg mass)"/>
+      <param name="use_external_yaw" value="false"/>
+      <remap from="~odom" to="$(arg odotopic)"/>
+      <remap from="~position_cmd" to="position_cmd"/>
+      <remap from="~so3_cmd" to="so3_cmd"/>
+      <remap from="~motors" to="motors"/>
+    </node>
+
+    <node pkg="state_control_vehicle"
+      type="state_control"
+      name="state_control"
+      output="screen">
+      <param name="traj_filename" type="string" value="/home/dragonfly12/trajectory/traj.txt"/>
+      <rosparam file="$(find state_control_vehicle)/config/mav_manager_params.yaml" />
+      <remap from="~odom" to="$(arg odotopic)"/>
+      <remap from="odom" to="$(arg odotopic)"/>
+      <remap from="~des_odom" to="des_odom"/>
+    </node>
+
+    <node pkg="nodelet"
+      type="nodelet"
+      args="standalone qualcomm_interface/SO3CmdToQualcomm"
+      name="so3cmd_to_qualcomm_nodelet"
+      required="true"
+      clear_params="true"
+      output="screen">
+      <remap from="~odom" to="$(arg odotopic)"/>
+      <remap from="~so3_cmd" to="so3_cmd"/>
+    </node>
+
+
+  </group>
+
+</launch>

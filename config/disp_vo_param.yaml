@@ -1,0 +1,31 @@
+source: dragonfly
+
+vo:
+  pub_image_debug: false
+  use_opt_vis_gb: false
+  use_thread: true
+
+  full_layer: 3
+  base_layer: 2
+
+  disp_range: 6
+  gd_size: 3
+  use_gd: false
+
+  switch_count: 1
+  switch_perc: 70
+  switch_depth: 0.1
+  switch_angle: 0.2
+
+  max_num_iter: 30
+  verbose: false
+  lambda: 0.0001
+  up_factor: 100
+  down_factor: 10
+  target_derr: 0.01
+
+  adapt_size: 7
+  adapt_thresh: -5
+
+  visual_pts_layer: 0
+  visual_image_layer: 0

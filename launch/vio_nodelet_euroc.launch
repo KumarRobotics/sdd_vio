@@ -1,0 +1,64 @@
+<launch>
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find sdd_vio)/config/custom_rosconsole.conf"/>
+  <arg name="debug" default="false"/>
+
+  <!-- <include file="$(find sdd_vio)/launch/imu.launch"/> -->
+
+  <node pkg="nodelet"
+    type="nodelet"
+    name="standalone_nodelet"
+    args="manager"
+    output="screen"
+    launch-prefix="gdb -ex run --args"
+    if="$(arg debug)"/>
+
+  <node pkg="nodelet"
+    type="nodelet"
+    name="standalone_nodelet"
+    args="manager"
+    output="screen"
+    unless="$(arg debug)"/>
+
+  <node pkg="nodelet" type="nodelet" name="left_rectify" args="load image_proc/rectify standalone_nodelet">
+    <remap from="image_mono" to="/cam0/image_raw"/>
+    <remap from="image_rect" to="/cam0/image_rect"/>
+  </node>
+  <node pkg="nodelet" type="nodelet" name="right_rectify" args="load image_proc/rectify standalone_nodelet">
+    <remap from="image_mono" to="/cam1/image_raw"/>
+    <remap from="image_rect" to="/cam1/image_rect"/>
+  </node>
+
+  <node pkg="nodelet"
+    type="nodelet"
+    name="sdd_vio_node"
+    args="load sdd_vio/SddVioNodelet standalone_nodelet"
+    output="screen">
+    <remap from="~cam_topic_left" to="/cam0/image_rect"/>
+    <remap from="~cam_topic_right" to="/cam1/image_rect"/>
+    <remap from="~imu_topic" to="/imu0"/>
+    <remap from="~cam" to="odom_vio"/>
+    <rosparam command="load" file="$(find sdd_vio)/config/vo_param.yaml"/>
+    <rosparam command="load" file="$(find sdd_vio)/config/camchain-imucam-euroc.yaml"/>
+  </node>
+
+  <!--
+  <node pkg="nodelet"
+    type="nodelet"
+    name="integration_nodelet"
+    args="load sdd_vio/ImuIntegrationNodelet standalone_nodelet" output="screen">
+    <remap from="~imu_topic" to="imu"/>
+    <remap from="~odom_topic" to="odom"/>
+  </node>
+  -->
+
+  <!-- UKF -->
+  <node pkg="quadrotor_ukf"
+    type="quadrotor_ukf"
+    name="quadrotor_ukf"
+    output="screen">
+    <rosparam file="$(find sdd_vio)/config/ukf_params.yaml"/>
+    <remap from="~odom_vio" to="odom_vio"/>
+    <remap from="~imu" to="imu0"/>
+    <remap from="~control_odom" to="/quadrotor_ukf/odom"/>
+  </node>
+  </launch>

@@ -1,0 +1,12 @@
+<launch>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find sdd_vio)/rviz/rviz_config_gs.rviz"/>
+
+    <!-- This is the state control node -->
+    <node pkg="korg_nanokontrol"
+        type="kontrol.py"
+        name="kontrol" args="3"
+        output="screen">
+        <remap from="/joy" to="/nanokontrol2"/>
+    </node>
+
+</launch>

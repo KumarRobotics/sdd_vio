@@ -1,0 +1,191 @@
+#statistics on running time - not implementing drift so far
+
+*** thread comparison on image preprocessing
+
+-- using thread:
+total number of frames lost: 0
+Average time for pyramid thread: 0.00318429
+Max time for pyramid thread: 0.00915594
+Average time for pyramid (one image not in thread): 0.00200334
+Max time for pyramid (one image not in thread): 0.0079744
+Average time for one image pipeline: 0.00498642
+Max time for one image pipeline: 0.0210296
+Average time for two image pipeline: 0.0265116
+Max time for two image pipeline: 0.0504788
+
+-- not using thread:
+total number of frames lost: -1 
+Average time for pyramid thread: 0.00391603
+Max time for pyramid thread: 0.0121269
+Average time for pyramid (one image not in thread): 0.00199209
+Max time for pyramid (one image not in thread): 0.00718798
+Average time for one image pipeline: 0.00492491
+Max time for one image pipeline: 0.0231243
+Average time for two image pipeline: 0.0259203
+Max time for two image pipeline: 0.0402962
+
+>> Putting image preprocessing to thread reduces ~1ms for keyframes.
+
+
+
+*** thread comparison on block matcher on disparity
+
+-- using thread (two pyramids):
+total number of frames lost: 5
+Average time for pyramid thread: 0.00326611
+Max time for pyramid thread: 0.00872654
+Average time for pyramid (one image not in thread): 0.00200955
+Max time for pyramid (one image not in thread): 0.0105676
+Average time for one image pipeline: 0.00501777
+Max time for one image pipeline: 0.0262086
+Average time for two image pipeline: 0.0261072
+Max time for two image pipeline: 0.0445164
+
+Average time for disparity generation: 0.0123814
+Max time for disparity generation: 0.0235848
+
+-- not using thread:
+total number of frames lost: 0
+Average time for pyramid thread: 0.00327385
+Max time for pyramid thread: 0.00867788
+Average time for pyramid (one image not in thread): 0.00204231
+Max time for pyramid (one image not in thread): 0.00615561
+Average time for one image pipeline: 0.00510745
+Max time for one image pipeline: 0.0241072
+Average time for two image pipeline: 0.0280687
+Max time for two image pipeline: 0.0476073
+
+Average time for disparity generation: 0.0141513
+Max time for disparity generation (for one layer): 0.0235593
+
+>> Putting disparity map to thread reduces ~2ms for keyframes.
+
+
+-- using thread (3 pyramids):
+total number of frames lost: -1
+Average time for pyramid thread: 0.00328643
+Max time for pyramid thread: 0.00764154
+Average time for pyramid (one image not in thread): 0.00205606
+Max time for pyramid (one image not in thread): 0.00660637
+Average time for one image pipeline: 0.00524951
+Max time for one image pipeline: 0.02063
+Average time for two image pipeline: 0.0268565
+Max time for two image pipeline: 0.0434335
+
+Average time for disparity generation: 0.0126103
+Max time for disparity generation (for one layer): 0.0225365
+
+
+-- not using thread:
+total number of frames lost: 6
+Average time for pyramid thread: 0.00333217
+Max time for pyramid thread: 0.00860459
+Average time for pyramid (one image not in thread): 0.00209365
+Max time for pyramid (one image not in thread): 0.00649598
+Average time for one image pipeline: 0.00526627
+Max time for one image pipeline: 0.0219512
+Average time for two image pipeline: 0.0292352
+Max time for two image pipeline: 0.0566877
+
+Average time for disparity generation: 0.01465
+Max time for disparity generation (for one layer): 0.0210259
+
+>> Putting disparity map to thread reduces ~2ms for keyframes.
+
+
+*** thread comparison for extracting features
+
+-- using thread (2 pyramids):  - compare to using thread on only disparity maps
+Total number of frames lost: 1
+Average time for pyramid thread: 0.0032822
+Average time for pyramid (one image not in thread): 0.00202019
+Average time for one image pipeline: 0.00504773
+Average time for two image pipeline: 0.0251889
+
+Average time for thread (combines disparity and feature extraction): 0.0246952
+
+>> Putting feature extraction to thread reduces ~1ms for keyframes
+
+
+*** thread comparison for adding 3D points triangulation
+
+-- using thread (2 pyramids):
+Total number of frames lost: -1
+Average time for pyramid thread: 0.00328783
+Average time for pyramid (one image not in thread): 0.00201783
+Average time for one image pipeline: 0.00501275
+Average time for two image pipeline: 0.0251077
+
+Average time for disparity generation: 0.0247348
+
+>> Putting 3D point triangulation to thread reduces ~0.1ms for keyframes, but makes code more uniform
+
+
+THREAD STATISTICS:::
+2 pyramid:
+
+Total number of frames lost: 1
+Total number of keyframes: 1037
+Total number of frames: 9330
+Average time for pyramid thread: 0.00332754
+Average time for pyramid (one image not in thread): 0.00202457
+Average time for two image thread: 0.0249635
+Average time for one image pipeline: 0.00508934
+Average time for two image pipeline: 0.0254009
+Average time for processing keyframe: 0.0341071
+Average time for processing nonkeyframe: 0.00738868
+Average time for all frames: 0.010061295
+
+Average time for callback function: 0.0175604  -> 57Hz
+
+
+3 pyramid:
+
+Total number of frames lost: -1
+Total number of keyframes: 1037
+Total number of frames: 9332
+Average time for pyramid thread: 0.00344805
+Average time for pyramid (one image not in thread): 0.00212534
+Average time for two mage thread: 0.0259854
+Average time for one image pipeline: 0.00521408
+Average time for two image pipeline: 0.0263723
+Average time for processing keyframe: 0.0358066
+Average time for processing nonkeyframe: 0.0075846
+
+
+ADDING NODELET:::
+2 pyramid:
+
+Total number of frames lost: -1
+Total number of keyframes: 1037
+Total number of frames: 9332
+Average time for pyramid thread: 0.00363787
+Average time for pyramid (one image not in thread): 0.00223772
+Average time for two mage thread: 0.0257867
+Average time for one image pipeline: 0.00525593
+Average time for two image pipeline: 0.0262025
+Average time for processing keyframe: 0.0355382
+Average time for processing nonkeyframe: 0.00773966
+
+Aveage time for callback function: 0.0186003
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+

@@ -1,0 +1,8 @@
+<launch>
+  <node pkg="nodelet" type="nodelet" name="left_rectify" args="standalone image_proc/rectify" ns="/stereo/left">
+    <remap from="image_mono" to="image_raw"/>
+  </node>
+  <node pkg="nodelet" type="nodelet" name="right_rectify" args="standalone image_proc/rectify" ns="/stereo/right">
+    <remap from="image_mono" to="image_raw"/>
+  </node>
+</launch>

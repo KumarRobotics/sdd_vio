@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>sdd_vio</name>
+  <version>0.0.0</version>
+  <description>The visual_inertial_odometry package</description>
+
+  <author>Wenxin Liu</author>
+  <maintainer email="wenxinl@seas.upenn.edu">wenxinl</maintainer>
+  <license>Apache 2.0</license>
+
+  <!-- Dependencies which this package needs to build itself. -->
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- Dependencies needed to compile this package. -->
+  <depend>roscpp</depend>
+  <depend>image_transport</depend>
+  <depend>sensor_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>tf</depend>
+  <depend>visualization_msgs</depend>
+  <depend>nodelet</depend>
+  <depend>rosbag</depend>
+  <depend>eigen</depend>
+
+  <export>
+    <nodelet plugin="${prefix}/nodelet_plugins.xml" />
+  </export>
+</package>

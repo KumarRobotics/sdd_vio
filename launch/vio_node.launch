@@ -1,0 +1,14 @@
+<launch>
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find sdd_vio)/config/custom_rosconsole.conf"/>
+  <arg name="namespace_name" default="stereo"/>
+
+  <node pkg="sdd_vio" type="sdd_vio_node" name="sdd_vio_node" clear_params="true" output="screen" required="true">
+    <remap from="~cam_topic_left" to="/stereo/left/image_raw"/>
+    <remap from="~cam_topic_right" to="/stereo/right/image_raw"/>
+    <remap from="~imu_topic" to="/hornet2/imu"/>
+    <remap from="~cam" to="odom_vio"/>
+    <rosparam command="load" file="$(find sdd_vio)/config/vo_param.yaml"/>
+    <rosparam command="load" file="$(find sdd_vio)/config/camchain-imucam-hornet2.yaml"/>
+  </node>
+
+</launch>

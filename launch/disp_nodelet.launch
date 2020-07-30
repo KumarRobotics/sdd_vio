@@ -1,0 +1,17 @@
+<!-- for disparity use only. Temporary use of disp branch -->
+
+<launch>
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find vins)/config/custom_rosconsole.conf"/>
+
+   <!--launch-prefix="gdb -ex run -args"/ -->
+  <node pkg="nodelet" type="nodelet" name="standalone_nodelet" args="manager" output="screen" />
+
+  <node pkg="nodelet" type="nodelet" name="vins_node" args="load vins/VinsNodelet standalone_nodelet" output="screen">
+	  <remap from="~cam_topic_left" to="stereo/image_left_rect"/>
+	  <remap from="~cam_topic_right" to="stereo/image_right_rect"/>
+<!--	  <remap from="~cam_topic_left" to="/fla1/sync/cam0/image_raw"/>
+   	  <remap from="~cam_topic_right" to="/fla1/sync/cam1/image_raw"/>  -->
+	  <rosparam command="load" file="$(find vins)/config/disp_vo_param.yaml"/>
+	  <rosparam command="load" file="$(find vins)/config/camchain-imucam-fla1_11052016.yaml"/>
+  </node>
+</launch>

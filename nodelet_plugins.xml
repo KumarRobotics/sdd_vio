@@ -1,0 +1,16 @@
+<library path="lib/libvo_nodelet">
+  <class name="sdd_vio/SddVioNodelet" type="sdd_vio::SddVioNodelet" base_class_type="nodelet::Nodelet">
+  <description>
+  vins nodelet
+  </description>
+  </class>
+</library>
+<library path="lib/libimu_integration_nodelet">
+  <class name="sdd_vio/ImuIntegrationNodelet"
+    type="sdd_vio::ImuIntegrationNodelet"
+    base_class_type="nodelet::Nodelet">
+  <description>
+  Imu integration nodelet to obtain high frequency odometry
+  </description>
+  </class>
+</library>

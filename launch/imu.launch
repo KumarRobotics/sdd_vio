@@ -1,0 +1,13 @@
+<launch>
+  <arg name="model" default="QuadrotorQc12"/>
+
+  <group ns="$(arg model)">
+    <node pkg="nodelet"
+      type="nodelet"
+      name="imu_pub"
+      args="standalone vio_qc/ImuPublisherNodelet"
+      output="screen">
+      <remap from="~imu" to="imu"/>
+    </node>
+  </group>
+</launch>
