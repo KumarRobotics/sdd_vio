@@ -64,7 +64,7 @@ PinholeCameraStereo::PinholeCameraStereo(const ros::NodeHandle &nh) :
     cv::Mat R_rect[2];
     cv::Matx34d P_[2];
     cv::stereoRectify(K_l, D_l, K_r, D_r, cv::Size(resolution[0], resolution[1]), R, t,
-                            R_rect[0], R_rect[1], P_[0], P_[1], Q_, CV_CALIB_ZERO_DISPARITY, 0);
+                            R_rect[0], R_rect[1], P_[0], P_[1], Q_, cv::CALIB_ZERO_DISPARITY, 0);
 
     std::cout<<"rectify R_0: \n"<<R_rect[0]<<"\n";
     std::cout<<"rectify P_0: \n"<<P_[0]<<"\n";

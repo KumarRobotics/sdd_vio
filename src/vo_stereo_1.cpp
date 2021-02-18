@@ -301,7 +301,7 @@ namespace sdd_vio {
 
             ROS_DEBUG_STREAM("add-ImagePair: setting visualization image...");
             if (use_opt_vis_gb_)
-                cv::cvtColor(img0_ready[base_layer_-1+visual_image_layer_],vis_curr,CV_GRAY2RGB);
+                cv::cvtColor(img0_ready[base_layer_-1+visual_image_layer_],vis_curr,cv::COLOR_GRAY2RGB);
 
             /* ====== one image pipeline ====== */
             ROS_DEBUG_STREAM("add-ImagePair: calling one-ImagePipeline...");
@@ -364,7 +364,7 @@ namespace sdd_vio {
 
             ROS_DEBUG_STREAM("add-ImagePair: setting visualization image...");
             if (use_opt_vis_gb_)
-                cv::cvtColor(img0_ready[base_layer_-1+visual_image_layer_],vis_curr,CV_GRAY2RGB);
+                cv::cvtColor(img0_ready[base_layer_-1+visual_image_layer_],vis_curr,cv::COLOR_GRAY2RGB);
 
             /* ====== two image pipeline ====== */
             ROS_DEBUG_STREAM("add-ImagePair: calling two-ImagePipeline...");
