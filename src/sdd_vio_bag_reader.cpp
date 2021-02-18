@@ -52,11 +52,11 @@ class SddVioBagReader {
   void callback(const sensor_msgs::Image::ConstPtr& l_img,
       const sensor_msgs::Image::ConstPtr& r_img);
 
-  SddVioNodelet sdd_vio_nodelet_;
-
   // Set up fake subscribers to capture images
   BagSubscriber<sensor_msgs::Image> l_img_sub_, r_img_sub_;
   BagSubscriber<sensor_msgs::Imu> imu_sub_;
+
+  SddVioNodelet sdd_vio_nodelet_;
 
   // Use time synchronizer to make sure we get properly synchronized images
   std::unique_ptr<message_filters::Synchronizer<SddVioNodelet::MySyncPolicy>>
