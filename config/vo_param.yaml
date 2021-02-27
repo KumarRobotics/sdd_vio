@@ -5,7 +5,7 @@ vo:
   use_ica: false
   use_lma: false
   use_huber: false
-  use_weights: false
+  use_weights: true
   c: 0.01
   input_rectified: false
 
@@ -46,5 +46,5 @@ vo:
   ba2: 0
   ba3: 0
 
-  var_w: [0.01, 0.01, 0.01]
+  var_w: [0.1, 0.1, 0.1]
   var_a: [1000, 1000, 1000]

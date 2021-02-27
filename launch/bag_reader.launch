@@ -3,7 +3,6 @@
   <node pkg="sdd_vio"
     type="sdd_vio_bag_reader"
     name="sdd_vio_node"
-    launch-prefix="gdb -ex run --args"
     output="screen">
     <param name="~left_image_topic" value="/cam0/image_raw"/>
     <param name="~right_image_topic" value="/cam1/image_raw"/>
