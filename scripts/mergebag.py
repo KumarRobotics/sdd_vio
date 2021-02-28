@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import sys
 import roslib; #roslib.load_manifest('bagedit')
 import rospy
@@ -26,10 +27,10 @@ def get_next(bag_iter, reindex = False,
         main_start_time = None, start_time = None,
         topics = None):
     try:
-        result = bag_iter.next()
+        result = next(bag_iter)
         if topics != None:
             while not result[0] in topics:
-                result = bag_iter.next()
+                result = next(bag_iter)
         if reindex:
             return (result[0], result[1],
                 result[2] - start_time + main_start_time)
@@ -51,9 +52,9 @@ def merge_bag(main_bagfile, bagfile, outfile = None, topics = None,
             outfile = pattern%index
             index += 1
     #output some information
-    print "merge bag %s in %s"%(bagfile, main_bagfile)
-    print "topics filter: ", topics
-    print "writing to %s."%outfile
+    print("merge bag %s in %s"%(bagfile, main_bagfile))
+    print("topics filter: ", topics)
+    print("writing to %s."%outfile)
     #merge bagfile
     outbag = rosbag.Bag(outfile, 'w')
     main_bag = rosbag.Bag(main_bagfile).__iter__()
@@ -78,7 +79,7 @@ def merge_bag(main_bagfile, bagfile, outfile = None, topics = None,
         outbag.close()
 
 def get_limits(bagfile):
-    print "Determine start and end index of %s..."%bagfile
+    print("Determine start and end index of %s..."%bagfile)
     end_time = None
     start_time = None
 
@@ -91,7 +92,7 @@ def get_limits(bagfile):
 
 if __name__ == "__main__":
     args = parse_args()
-    print args
+    print(args)
     if args.t != None:
         args.t = args.t.split(',')
     merge_bag(args.main_bagfile,
