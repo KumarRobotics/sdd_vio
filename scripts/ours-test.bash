@@ -10,7 +10,7 @@ fi
 
 loop=$1
 echo "writing results to stats_ours.txt"
-mkdir trajbags_ours
+mkdir -p trajbags_ours
 
 for i in "${arr[@]}"
 do
@@ -29,7 +29,7 @@ do
     sleep 3
 
     # merge vicon topic from original bag
-    ./mergebag.py -o merge.bag -t /vicon/firefly_sbx/firefly_sbx -t vicon/firefly_sbx/firefly_sbx record.bag ../src/sdd_vio/bagfiles/${i}.bag
+    ./mergebag.py -o merge.bag -t /vicon/firefly_sbx/firefly_sbx,vicon/firefly_sbx/firefly_sbx record.bag ../src/sdd_vio/bagfiles/${i}.bag
     # transform recorded odom topics to pose_stamped
     ./bag_transform.py merge.bag
     # rewrite bag timestamp
