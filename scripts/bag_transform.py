@@ -9,7 +9,7 @@ import nav_msgs
 with rosbag.Bag('pose_stamped.bag', 'w') as outbag:
     cwd = os.getcwd()
     for topic, msg, t in rosbag.Bag(sys.argv[1]).read_messages():
-        if topic == "/vicon/firefly_sbx/firefly_sbx":
+        if "vicon" in topic:
             msg_out = geometry_msgs.msg.PoseStamped()
             msg_out.header = msg.header
             msg_out.pose.position.x = msg.transform.translation.x

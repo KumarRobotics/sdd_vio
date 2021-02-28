@@ -29,7 +29,7 @@ do
     sleep 3
 
     # merge vicon topic from original bag
-    ./mergebag.py -o merge.bag -t /vicon/firefly_sbx/firefly_sbx record.bag ../src/sdd_vio/bagfiles/${i}.bag
+    ./mergebag.py -o merge.bag -t /vicon/firefly_sbx/firefly_sbx -t vicon/firefly_sbx/firefly_sbx record.bag ../src/sdd_vio/bagfiles/${i}.bag
     # transform recorded odom topics to pose_stamped
     ./bag_transform.py merge.bag
     # rewrite bag timestamp
@@ -43,4 +43,4 @@ do
 done
 
 # clean up
-rm *.bag
+#rm *.bag
