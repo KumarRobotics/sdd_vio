@@ -84,7 +84,6 @@ SddVioBagReader::SddVioBagReader(ros::NodeHandle& nh)
 void SddVioBagReader::callback(const sensor_msgs::Image::ConstPtr& l_img,
     const sensor_msgs::Image::ConstPtr& r_img)
 {
-  std::cout << "SddVioBagReader::callback\n";
   sdd_vio_nodelet_.imgCb(l_img, r_img);
 }
 

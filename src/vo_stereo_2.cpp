@@ -242,7 +242,11 @@ namespace sdd_vio {
         for (int i=0; i<nlays_; ++i) {
             if ((i-1)>=0) { // if there is a layer before this layer
                 if (num_feat_pts_[i-1] < num_feat_pts_[i])
+                {
                     ROS_WARN_STREAM("unreasonable feature point layout in pyramid!");
+                    ROS_WARN_STREAM("number of feature points in layer " << i << ": " << num_feat_pts_[i]);
+                    ROS_WARN_STREAM("number of feature points in layer " << i-1 << ": " << num_feat_pts_[i-1]);
+                }
             }
         }
 

@@ -155,6 +155,8 @@ namespace sdd_vio {
                 if (if_break) {
                     ROS_INFO_STREAM("iteration "<<iter<<"--------");
                     ROS_INFO("err/initial err: %g/%g", err_mean, err_init);
+                    if (err_mean > err_init)
+                      ROS_WARN_STREAM("bad convergence - err/initial err: "<<err_mean<<"/"<<err_init<<", iteration"<<iter);
                     break;
                 }
 
@@ -170,7 +172,7 @@ namespace sdd_vio {
 
 
                 /* LMA */
-                float mult = 1 + lambda;
+                float mult = lambda;
                 bool ill = true;  // if ill conditioned (error increase)
                 int lmit = 0;  // number of iterations while ill=true
 
@@ -185,6 +187,7 @@ namespace sdd_vio {
 
                     /* lma update on H */
                     const Mat9 H_curr = H + Mat9(mult * H.diagonal().asDiagonal());
+
 
                     /* get delta increment */
                     const Vec9 delta = -H_curr.ldlt().solve(b);
@@ -219,11 +222,10 @@ namespace sdd_vio {
 
                     /* if ill=true, higher lambda by up factor, count as one iteration */
                     if (ill) {
-                        mult = (1+lambda*up)/(1+lambda);
-                        lambda *= up;
+                          lambda *= up;
+                        mult = lambda;
                         iter++;
                     }
-
                     lmit++;
                 }
 
@@ -241,7 +243,7 @@ namespace sdd_vio {
 
                 /* if LM iterations didn't decrease the error, stop */
                 if (ill) {
-                    ROS_WARN_STREAM("bad convergence!");
+                    //ROS_WARN_STREAM("bad convergence!");
                     if_break = true;
                 }
 
@@ -253,6 +255,8 @@ namespace sdd_vio {
                 if (if_break) {
                     ROS_INFO_STREAM("iteration "<<iter<<"--------");
                     ROS_INFO("err/initial err: %g/%g", err_mean, err_init);
+                    if (err_mean > err_init)
+                      ROS_WARN_STREAM("bad convergence - err/initial err: "<<err_mean<<"/"<<err_init<<", iteration"<<iter);
                     break;
                 }
 
@@ -436,6 +440,9 @@ namespace sdd_vio {
                     W[i] = 1;
                 else
                     W[i] = (1.345*sigma)/fabs(r_hat[i]);
+                if(use_weights_)
+                    W[i] = W[i] * c_/(c_+error_masked[i]*error_masked[i]);
+
             }
         }
         else {
