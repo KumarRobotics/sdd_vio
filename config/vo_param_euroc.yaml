@@ -1,0 +1,50 @@
+vo:
+  pub_image_debug: false
+  use_opt_vis_gb: false
+  use_thread: true
+  use_ica: false
+  use_lma: true
+  use_huber: true
+  use_weights: true
+  c: 0.1
+  input_rectified: false
+
+  full_layer: 3
+  base_layer: 2
+
+  disp_range: 6
+  gd_size: 2
+  use_gd: true
+
+  switch_count: 50
+  switch_perc: 70
+  switch_depth: 0.05
+  switch_angle: 0.2
+
+  max_num_iter: 30
+  verbose: false
+  lambda: 0.001
+  up_factor: 10
+  down_factor: 2
+  error_scale_factor: 1.0e-4
+  target_derr: 1.0e-4
+
+  adapt_size: 7
+  adapt_thresh: -5
+  feat_margin: 2
+
+  visual_pts_layer: 0
+  visual_image_layer: 0
+
+  alpha: 1
+  #weight_R: 1.0
+  #weight_v: 0.0
+  #weight_p: 0.1
+  beta: 1000
+
+  ba1: 0
+  ba2: 0
+  ba3: 0
+
+  var_w: [0.1, 0.1, 0.1]
+  var_a: [1000, 1000, 1000]
