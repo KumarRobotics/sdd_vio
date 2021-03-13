@@ -1,7 +1,7 @@
 #!/bin/bash
 
 trap "exit" INT
-declare -a arr=("V1_02_medium") # "V1_02_medium" "V1_03_difficult" "V2_01_easy" "V2_02_medium" "V2_03_difficult")
+declare -a arr=("V1_01_easy" "V1_02_medium" "V1_03_difficult" "V2_01_easy" "V2_02_medium" "V2_03_difficult")
 
 if [ $# -ne 1 ]; then
     echo $0: usage: ./rovio-test.bash loop_number
@@ -19,7 +19,6 @@ do
 
   for ((j=0;j<${loop};j++));
   do
-    echo "loop number ${j+1}/${loop}"
 
     ./record.sh -O record &
     roslaunch rovio rovio_node.launch > /dev/null &
