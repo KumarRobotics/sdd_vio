@@ -7,8 +7,7 @@
     <param name="~left_image_topic" value="/cam0/image_raw"/>
     <param name="~right_image_topic" value="/cam1/image_raw"/>
     <param name="~imu_topic" value="/imu0"/>
-    <rosparam command="load" file="$(find sdd_vio)/config/vo_param.yaml"/>
-    <!--<rosparam command="load" file="$(find sdd_vio)/config/camchain-imucam-snapdragon.yaml"/>-->
+    <rosparam command="load" file="$(find sdd_vio)/config/vo_param_euroc.yaml"/>
     <rosparam command="load" file="$(find sdd_vio)/config/camchain-imucam-euroc.yaml"/>
     <param name="bag_file" value="$(find sdd_vio)/bagfiles/$(arg bag_name)"/>
     <remap from="~cam" to="odom_vio"/>

@@ -3,10 +3,10 @@ vo:
   use_opt_vis_gb: false
   use_thread: true
   use_ica: false
-  use_lma: false
-  use_huber: false
+  use_lma: true
+  use_huber: true
   use_weights: true
-  c: 0.01
+  c: 0.1
   input_rectified: false
 
   full_layer: 3
@@ -23,9 +23,9 @@ vo:
 
   max_num_iter: 30
   verbose: false
-  lambda: 0.0001
-  up_factor: 100
-  down_factor: 10
+  lambda: 0.001
+  up_factor: 10
+  down_factor: 2
   error_scale_factor: 1.0e-4
   target_derr: 1.0e-4
 
@@ -47,4 +47,4 @@ vo:
   ba3: 0
 
   var_w: [0.1, 0.1, 0.1]
-  var_a: [1000, 1000, 1000]
+  var_a: [10000, 10000, 10000]

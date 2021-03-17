@@ -33,11 +33,12 @@
     <remap from="~cam_topic_right" to="/stereo/right/image_rect"/>
     <remap from="~imu_topic" to="/imu"/>
     <remap from="~cam" to="odom_vio"/>
-    <rosparam command="load" file="$(find sdd_vio)/config/vo_param.yaml"/>
+    <rosparam command="load" file="$(find sdd_vio)/config/vo_param_snapdragon.yaml"/>
     <rosparam command="load" file="$(find sdd_vio)/config/camchain-imucam-snapdragon.yaml"/>
   </node>
 
   <!-- UKF -->
+  <!--
   <node pkg="quadrotor_ukf"
     type="quadrotor_ukf"
     name="quadrotor_ukf"
@@ -47,5 +48,6 @@
     <remap from="~imu" to="imu"/>
     <remap from="~control_odom" to="/dragonfly10/odom"/>
   </node>
+  -->
 
 </launch>
