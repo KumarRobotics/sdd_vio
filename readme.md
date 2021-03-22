@@ -1,6 +1,6 @@
 # Semi-Dense Direct Visual Inertial Odometry
 
-[Low Texture Dataset](https://drive.google.com/drive/folders/1U8gvH7T0CkGYPr03miqyINjqM0vNap5n?usp=sharing) (5 Rosbags, 842MB) \
+[Low Texture Dataset](https://drive.google.com/drive/folders/1U8gvH7T0CkGYPr03miqyINjqM0vNap5n?usp=sharing) (11 Rosbags, 4.9GB) \
 [Video - EuRoC Dataset](https://drive.google.com/file/d/1wPehEBmDj-Cq0U8H5JSmuaKKSnddE69D/view?usp=sharing) \
 [Video - Low Texture Dataset](https://drive.google.com/file/d/1c6ZSkqv6xGx2S8TW6gCO22NPK98iA_ho/view?usp=sharing) \
 [Video - Flight](https://drive.google.com/file/d/1nz2vDpdt20K8VT4DuHf5OBYkbVfet-z6/view?usp=sharing)
@@ -56,4 +56,4 @@ cam1:
 `cam0` is the left camera and `cam1` is the right camera. `T_cn_cnm1` is the relative transformation from the right to the left camera.
 
 ### Param file
-The parameters for VIO are specified in `vo_param.yaml`. 
+The parameters for the EuRoC dataset are specified in `vo_param_euroc.yaml`. For snapdragon and low texture dataset, use `vo_param_snapdragon.yaml`.
